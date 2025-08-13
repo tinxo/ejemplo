@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # Configuración de la API
-API_URL = "http://localhost:8000"
+API_URL = st.secrets["api_url"] | "http://localhost:8000"
 
 # Función para verificar conexión con la API
 @st.cache_data(ttl=60)
