@@ -1,0 +1,79 @@
+schema: '2.0'
+stages:
+  preparar_datos:
+    cmd: python src/data_prep.py --params limpieza_param --outs 
+      data/processed/clean.csv
+    deps:
+    - path: data/raw/sample.csv
+      hash: md5
+      md5: 17d227e7388c072186099753aa3ad188
+      size: 169
+    - path: data/validation_passed.txt
+      hash: md5
+      md5: 1bd082f18a0cbb48819048a67ef25c7f
+      size: 38
+    - path: src/data_prep.py
+      hash: md5
+      md5: 3204ce22268a9d30c026a848110276c0
+      size: 606
+    outs:
+    - path: data/processed/clean.csv
+      hash: md5
+      md5: 1efba7b0430f0acf19bb76922329e7c7
+      size: 170
+  validar_datos:
+    cmd: python tests/test_data_quality.py
+    deps:
+    - path: data/raw/sample.csv
+      hash: md5
+      md5: 17d227e7388c072186099753aa3ad188
+      size: 169
+    - path: tests/test_data_quality.py
+      hash: md5
+      md5: e9df19d035cb618c9b91b72ffe0fba15
+      size: 1392
+    outs:
+    - path: data/validation_passed.txt
+      hash: md5
+      md5: 1bd082f18a0cbb48819048a67ef25c7f
+      size: 38
+  entrenar_modelo:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/clean.csv
+      hash: md5
+      md5: 1efba7b0430f0acf19bb76922329e7c7
+      size: 170
+    - path: src/train.py
+      hash: md5
+      md5: 730a3406cb02ec241bc17df4d54248f7
+      size: 3068
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 4940f7b7cbb4efaaa2601c0c01e51f92
+      size: 53648
+    - path: models/model_metadata.json
+      hash: md5
+      md5: f4607640360db47d96078634fa77a4b3
+      size: 146
+  evaluar_modelo:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: 8def9f547b7bb21ad3448045ee58ab94
+      size: 195
+    - path: models/model.pkl
+      hash: md5
+      md5: 4940f7b7cbb4efaaa2601c0c01e51f92
+      size: 53648
+    - path: src/evaluate.py
+      hash: md5
+      md5: a66ba8a647a812776918a3dcc14c8afc
+      size: 3265
+    outs:
+    - path: metrics/evaluation.json
+      hash: md5
+      md5: 85f353ce64a4f649fa67665b96fa05b1
+      size: 358

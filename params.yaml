@@ -1,0 +1,7 @@
+limpieza_param:
+  eliminar_duplicados: true
+  eliminar_nulos: true
+mlflow:
+  tracking_uri: "file:./mlruns"
+  experiment_name: "subscription_prediction"
+  registered_model_name: "SubscriptionPredictor"
